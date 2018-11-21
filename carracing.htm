@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Car Racing 1</title>
+
+  <script
+  			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  			  crossorigin="anonymous"></script>
+
+<style>
+/*  #car{
+transition-property: transform;
+transition-duration: 0.3s;
+transition-timing-function: linear;
+transition-delay: 0s;
+}
+*/
+</style>
+
+</head>
+<body>
+
+
+<img id="hindernis" src="car_yellow.png" style="position: absolute; top: 200px; left: 500px; width: 100px; height: 100px;">
+<img id="car" src="car_blue.png" style="position: absolute; top: 300px; left: 300px; width: 100px; height: 100px;">
+
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+
+  var fahren = false;
+  var richtung = "ost";
+  var degrees = 0;
+  var losgehts = '';
+
+$(document).keypress(function(event){
+
+var keycode = (event.which);
+  //alert(keycode);
+switch (keycode) {
+  case 13:
+  if(fahren == true){
+    fahren=false;
+  }
+  else {
+    fahren=true;
+  }
+    Fahren();
+    break;
+  case 100:
+    Rotate('rechts');
+    break;
+  case 97:
+    Rotate('links');
+    break;
+}
+
+
+});
+
+function Fahren() {
+
+
+
+
+var position = $("#car").position();
+
+switch (richtung) {
+  case "ost":
+    $("#car").css('left', position.left+1+'px');
+    break;
+  case "sued":
+    $("#car").css('top', position.top+1+'px');
+    break;
+  case "west":
+    $("#car").css('left', position.left-1+'px');
+    break;
+  case "nord":
+    $("#car").css('top', position.top-1+'px');
+    break;
+}
+//alert(richtung);
+
+CheckCrash();
+//losgehts = setTimeout(Fahren, 10);
+
+if(fahren) window.setTimeout(Fahren,1);
+}
+
+function CheckCrash() {
+var position = $("#car").position();
+var hindernis = $("#hindernis").position();
+
+  if(position.left>hindernis.left && position.left<hindernis.left+100 && position.top>hindernis.top+10 && position.top<hindernis.top+100
+  || position.left+100>hindernis.left && position.left+100<hindernis.left+100 && position.top+100>hindernis.top+10 && position.top+100<hindernis.top+100
+  || position.left>hindernis.left && position.left<hindernis.left+100 && position.top+100>hindernis.top+10 && position.top+100<hindernis.top+100
+  || position.left+100>hindernis.left && position.left+100<hindernis.left+100 && position.top>hindernis.top+10 && position.top<hindernis.top+100) {
+    alert("Crash!");
+    clearTimeout(losgehts);
+  }
+}
+
+
+
+
+
+function Rotate(wohin) {
+if (wohin=="rechts") {
+  degrees += 90;
+  switch (richtung) {
+    case 'ost': richtung='sued';
+      break;
+    case 'sued': richtung='west';
+      break;
+    case 'west': richtung='nord';
+      break;
+    case 'nord': richtung='ost';
+      break;
+  }
+}
+else if (wohin=="links") {
+  degrees -= 90;
+  switch (richtung) {
+    case 'ost': richtung='nord';
+      break;
+    case 'nord': richtung='west';
+      break;
+    case 'west': richtung='sued';
+      break;
+    case 'sued': richtung='ost';
+      break;
+  }
+}
+     $('#car').css({
+       'transform': 'rotate(' + degrees + 'deg)',
+       '-ms-transform': 'rotate(' + degrees + 'deg)',
+       '-moz-transform': 'rotate(' + degrees + 'deg)',
+       '-webkit-transform': 'rotate(' + degrees + 'deg)',
+       '-o-transform': 'rotate(' + degrees + 'deg)'
+     });
+
+}
+
+
+
+});
+</script>
+
+
+</body>
+</html>
